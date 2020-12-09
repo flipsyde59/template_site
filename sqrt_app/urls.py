@@ -6,6 +6,5 @@ app_name = 'sqrt_app'
 
 urlpatterns = [
     path('', views.index, name='index'),
-    path('<int:riddle_id>/', views.detail, name='detail'),
-    path('<int:riddle_id>/answer/', views.answer, name='answer')
+    #path('/getSqrt', views.get_sqrt, name='get_sqrt')
 ]

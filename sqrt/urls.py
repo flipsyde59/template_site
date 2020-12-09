@@ -17,6 +17,6 @@ from django.urls import include, path
 from django.contrib import admin
 
 urlpatterns = [
-    path('sqrt/', include('sqrt_app.urls'), name="sqrt"),
+    path('', include('sqrt_app.urls'), name="sqrt"),
     path('admin/', admin.site.urls),
 ]

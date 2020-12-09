@@ -1,25 +1,21 @@
-from django.http.response import HttpResponse
+from django.http import JsonResponse
+from django.http import QueryDict
 from django.shortcuts import get_object_or_404, render
+from django.views.decorators.csrf import csrf_exempt
+from .source import sqrt
 
-from .models import Riddle, Option
+def from_bytes(byte_str):
+    import ast
+    dict_str = byte_str.decode("UTF-8")
+    mydata = ast.literal_eval(dict_str)
+    return mydata
 
 
+@csrf_exempt
 def index(request):
-    return render(request, "index.html", {"latest_riddles": Riddle.objects.order_by('-pub_date')[:5]})
-
-
-def detail(request, riddle_id):
-    return render(request, "answer.html", {"riddle": get_object_or_404(Riddle, pk=riddle_id)})
-
-
-def answer(request, riddle_id):
-    riddle = get_object_or_404(Riddle, pk=riddle_id)
-    try:
-        option = riddle.option_set.get(pk=request.POST['option'])
-    except (KeyError, Option.DoesNotExist):
-        return render(request, 'answer.html', {'riddle': riddle, 'error_message': 'Option does not exist'})
-    else:
-        if option.correct:
-            return render(request, "index.html", {"latest_riddles": Riddle.objects.order_by('-pub_date')[:5], "message": "Nice! Choose another one!"})
-        else:
-            return render(request, 'answer.html', {'riddle': riddle, 'error_message': 'Wrong Answer!'})
+    if request.method == 'GET':
+        return render(request, "index.html")
+    if request.method == 'PATCH':
+        rr = from_bytes(request.read())
+        res = sqrt(rr['number'], int(rr['eps']))
+        return JsonResponse({'res': res})

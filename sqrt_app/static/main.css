@@ -13,20 +13,23 @@ h1,h2,h3{
 a {
     color: blue;
 }
-
+#L
+{
+    float: right;
+}
 form {
-    margin: 0 auto;
+    margin: right;
     padding: 1em;
-    border: 1px solid #CCC;
-    border-radius: 1em;
+    /*border: 1px solid #CCC;*/
+    /*border-radius: 1em;*/
 }
-form div + div {
+/*form div + div {
     margin-top: 1em;
-}
+}*/
 label {
     display: inline-block;
     text-align: center;
-    width: 40%;
+    /*width: 40%;*/
 }
 input {
     font: 1em sans-serif;
@@ -41,7 +44,11 @@ input:focus {
 p, div.button {
     text-align: center;
 }
-
+p
+{
+    margin-block-start: 0;
+    margin-block-end: 0;
+}
 p.error-message {
     color: lightcoral;
 }

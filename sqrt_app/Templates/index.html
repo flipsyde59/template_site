@@ -1,24 +1,85 @@
 {% load static %}
-
+{%csrf_token%}
 <link rel="stylesheet" type="text/css" href="{% static 'main.css' %}" />
-<h1>Available Riddles</h1>
+<div align="right" >
+		<div style="text-align-last: end;"><p><b id="lang">Язык</b></p></div>
+		<select name="" id="lang_select">
+            <option value="rus">Russian</option>
+            <option value="eng">English</option>
+            <option value="spa">Spanish</option>
+            <option value="chi">Chinese</option>
+       </select>
+	</div>
 
-{% if message %}
-    <p><strong>{{ message }}</strong></p>
-{% endif %}
+	<div align="center">
 
-{% if latest_riddles %}
+		<font size = "4"><p><b id="inp_here">Введите число сюда</b> </p> </font>
+		<input id="num" type="text" size="20" onchange="ololo()">
+        <p><c id="help">Подсказка</c>>: &radic;a&sup2; = &plusmn;a </p>
+		<font size = "4"><p><b id="count_dig">Выберите количество знаков после запятой</b> </p> </font>
+		<select name="" id="epsilon">
+	   <option value="0">0</option>
+           <option value="1">1</option>
+           <option value="2">2</option>
+           <option value="3">3</option>
+           <option value="4">4</option>
+           <option value="5">5</option>
+           <option value="6">6</option>
+           <option value="7">7</option>
+           <option value="8">8</option>
+           <option value="9">9</option>
+       </select>
+       <font size = "4"><p><b id="result">Результат</b> </p> </font>
+        <div id="dig_res"></div>
+	</div>
 
-    <ul>
-        {% for riddle in latest_riddles %}
-            <li>
-                <a href="/sqrt/{{ riddle.id }}/">
-                    {{ riddle.riddle_text }}
-                </a>
-            </li>
-        {% endfor %}
-    </ul>
-
-{% else %}
-    <p>No riddles are available right now.</p>
-{% endif %}
+<script>
+    document.getElementById('lang_select').addEventListener('change', function(e){
+            var lang=e.target.value;
+            if (lang==="rus"){
+            document.getElementById('lang').innerText="Язык";
+            document.getElementById('inp_here').innerText="Введите число сюда";
+            document.getElementById('help').innerText="Подсказка";
+            document.getElementById('count_dig').innerText="Выберите количество знаков после запятой";
+            document.getElementById('result').innerText="Результат";
+            }
+            if (lang==="eng"){
+            document.getElementById('lang').innerText="Language";
+            document.getElementById('inp_here').innerText="Enter the number here";
+            document.getElementById('help').innerText="Prompt";
+            document.getElementById('count_dig').innerText="Select the number of decimal places";
+            document.getElementById('result').innerText="Result";
+            }
+            if (lang==="spa"){
+            document.getElementById('lang').innerText="Lengua";
+            document.getElementById('inp_here').innerText="Ingrese el número aquí";
+            document.getElementById('help').innerText="Insinuación";
+            document.getElementById('count_dig').innerText="Seleccione el número de lugares decimales";
+            document.getElementById('result').innerText="Resultado";
+            }
+            if (lang==="chi"){
+            document.getElementById('lang').innerText="舌";
+            document.getElementById('inp_here').innerText="在此輸入號碼";
+            document.getElementById('help').innerText="暗示";
+            document.getElementById('count_dig').innerText="選擇小數位數";
+            document.getElementById('result').innerText="結果";
+            }
+    })
+var sss;
+async function ololo(){
+let inp = document.getElementById('num');
+let eps = document.getElementById('epsilon');
+let response = await fetch('/', {
+                            method: "PATCH",
+                            credentials: "include",
+                            body: JSON.stringify({number:inp.value, eps:eps.value}),
+                            cache: "no-cache",
+                            headers: new Headers({
+                                "content-type": "application/json"
+                            })
+                        });
+let w = await response.json();
+let out = document.getElementById('dig_res');
+out.innerText = w['res'];
+}
+</script>
